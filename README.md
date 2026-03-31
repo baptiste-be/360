@@ -1,26 +1,33 @@
-# 360 Scanner Prototype
+# Street View 360 Scanner (Web)
 
-Prototype web qui capture des images via la caméra arrière et utilise le gyroscope (`deviceorientation`) pour déclencher une capture automatique tous les ~12°.
+Ce projet implémente un scan 360 guidé en grille :
+- balayage **haut vers bas** (pitch),
+- puis **gauche vers droite** / **droite vers gauche** en serpentin (yaw),
+- génération d'une image équirectangulaire,
+- affichage dans une **bulle 360 navigable**,
+- export **téléchargeable** du panorama (`.jpg`).
 
-## Fonctionnalités
+## Fonctionnement
 
-- Démarrage caméra mobile (`getUserMedia`).
-- Lecture du yaw gyroscope (`alpha`).
-- Capture automatique d'images pendant la rotation.
-- Assemblage panoramique 360° simplifié dans un canvas.
+1. Démarrer la caméra arrière du smartphone.
+2. Lancer le scan 360.
+3. Aligner le téléphone sur chaque cible (Yaw/Pitch) affichée.
+4. L'application capture automatiquement les tuiles de la grille.
+5. À la fin, la bulle 360 s'ouvre et peut être explorée (drag/zoom).
+6. Télécharger le panorama généré.
 
-## Démarrage
-
-Le projet est statique :
+## Démarrage local
 
 ```bash
 python3 -m http.server 8080
 ```
 
-Puis ouvre `http://localhost:8080` depuis un smartphone (HTTPS recommandé en prod pour les permissions capteur/caméra).
+Puis ouvrir `http://localhost:8080` sur mobile.
 
-## Limites
+## Notes importantes
 
-- Ceci est un **prototype** et non un moteur Street View complet.
-- L'assemblage d'image est simple (pas de stitching avancé/SLAM).
-- Les permissions iOS pour le gyroscope nécessitent interaction utilisateur.
+- Cette version reproduit une expérience **type Street View** (bulle 360 navigable),
+  mais ce n'est pas une intégration officielle Google Street View API.
+- Pour une vraie publication Google Street View, il faudrait passer par les APIs Google Maps Platform
+  et leur pipeline de publication conforme.
+- Les permissions capteurs/caméra exigent HTTPS en production.

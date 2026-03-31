@@ -3,40 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scan 360</title>
+    <title>Street View 360 Scanner</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="app">
-      <h1>Scan 360 (prototype)</h1>
+      <h1>Street View 360 Scanner</h1>
       <p>
-        Tourne lentement avec ton téléphone. L'application utilise le gyroscope
-        pour guider la capture et assemble une vue panoramique 360° simplifiée.
+        Scan guidé <strong>haut → bas</strong> et <strong>gauche → droite</strong>.
+        L'app capture une grille complète (yaw/pitch), construit une équirectangulaire
+        360° puis l'ouvre dans une bulle navigable.
       </p>
 
       <section class="controls">
-        <button id="startBtn">Démarrer la caméra</button>
-        <button id="captureBtn" disabled>Capturer automatiquement</button>
-        <button id="stopBtn" disabled>Arrêter</button>
+        <button id="startBtn">1) Démarrer caméra</button>
+        <button id="scanBtn" disabled>2) Lancer scan 360</button>
+        <button id="stopBtn" disabled>Stop</button>
+        <button id="downloadBtn" disabled>Télécharger panorama</button>
       </section>
 
       <section class="status">
-        <div><strong>Yaw actuel:</strong> <span id="yawValue">0°</span></div>
-        <div><strong>Frames:</strong> <span id="frameCount">0</span></div>
-        <div><strong>État:</strong> <span id="state">En attente</span></div>
+        <div><strong>Yaw:</strong> <span id="yawValue">0°</span></div>
+        <div><strong>Pitch:</strong> <span id="pitchValue">0°</span></div>
+        <div><strong>Point:</strong> <span id="targetValue">-</span></div>
+        <div><strong>Captures:</strong> <span id="frameCount">0</span></div>
+        <div class="status-wide"><strong>État:</strong> <span id="state">En attente</span></div>
       </section>
 
-      <section class="preview">
-        <video id="video" autoplay playsinline muted></video>
-        <canvas id="frameCanvas" hidden></canvas>
+      <section class="preview-grid">
+        <div>
+          <h2>Caméra</h2>
+          <video id="video" autoplay playsinline muted></video>
+        </div>
+        <div>
+          <h2>Équirectangulaire générée</h2>
+          <canvas id="panoramaCanvas" width="4096" height="2048"></canvas>
+        </div>
       </section>
 
       <section>
-        <h2>Panorama généré</h2>
-        <canvas id="panoramaCanvas" width="2048" height="512"></canvas>
+        <h2>Bulle 360 (navigation comme Street View)</h2>
+        <div id="viewer"></div>
       </section>
+
+      <canvas id="frameCanvas" hidden></canvas>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
