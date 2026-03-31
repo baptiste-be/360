@@ -2,6 +2,7 @@ const startBtn = document.getElementById('startBtn');
 const scanBtn = document.getElementById('scanBtn');
 const stopBtn = document.getElementById('stopBtn');
 const downloadBtn = document.getElementById('downloadBtn');
+const speedMode = document.getElementById('speedMode');
 
 const video = document.getElementById('video');
 const frameCanvas = document.getElementById('frameCanvas');
@@ -21,7 +22,11 @@ const ROWS = 18; // 180 / 10°
 const DEG_PER_CELL = 10;
 const YAW_TOLERANCE = 6;
 const PITCH_TOLERANCE = 6;
-const CAPTURE_COOLDOWN_MS = 450;
+const CAPTURE_COOLDOWN_BY_MODE = {
+  fast: 100,
+  balanced: 220,
+  safe: 360
+};
 
 let stream;
 let isScanning = false;
@@ -31,6 +36,7 @@ let captureIndex = 0;
 let gridTargets = [];
 let panoramaReady = false;
 let lastCaptureAt = 0;
+let currentCaptureCooldown = CAPTURE_COOLDOWN_BY_MODE.fast;
 let viewerInstance = null;
 
 function setState(message) {
@@ -122,7 +128,7 @@ function tryCaptureTarget() {
   }
 
   const now = Date.now();
-  if (now - lastCaptureAt < CAPTURE_COOLDOWN_MS) return;
+  if (now - lastCaptureAt < currentCaptureCooldown) return;
 
   const target = gridTargets[captureIndex];
   drawGuide(target);
@@ -213,6 +219,12 @@ async function startCamera() {
   setState('Caméra active. Lance le scan 360.');
 }
 
+function updateCaptureSpeed() {
+  const mode = speedMode?.value || 'fast';
+  currentCaptureCooldown = CAPTURE_COOLDOWN_BY_MODE[mode] ?? CAPTURE_COOLDOWN_BY_MODE.fast;
+}
+
+
 function stopCamera() {
   if (!stream) return;
   stream.getTracks().forEach((track) => track.stop());
@@ -222,6 +234,7 @@ function stopCamera() {
 function startScan() {
   if (!stream) return;
 
+  updateCaptureSpeed();
   initEmptyPanorama();
   gridTargets = buildGridTargets();
   captureIndex = 0;
@@ -231,7 +244,7 @@ function startScan() {
   isScanning = true;
   lastCaptureAt = 0;
   scanBtn.textContent = 'Scan en cours...';
-  setState('Scan actif: suis chaque cible, de haut en bas et de gauche à droite.');
+  setState(`Scan actif (${speedMode.value}): suis chaque cible, de haut en bas et de gauche à droite.`);
 
   tryCaptureTarget();
 }
@@ -275,6 +288,8 @@ scanBtn.addEventListener('click', () => {
 
 stopBtn.addEventListener('click', stopAll);
 downloadBtn.addEventListener('click', downloadPanorama);
+speedMode.addEventListener('change', updateCaptureSpeed);
 
 window.addEventListener('deviceorientation', updateOrientation, true);
+updateCaptureSpeed();
 initEmptyPanorama();

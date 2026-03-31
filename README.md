@@ -11,6 +11,7 @@ Version améliorée pour un scan plus fiable et un vrai ratio panorama.
 - Génération en **équirectangulaire 2:1** (4096 x 2048), ratio standard des viewers 360.
 - Prévisualisation en bulle 360 navigable (Pannellum).
 - Téléchargement du panorama final au format JPG.
+- Modes de vitesse de capture (`Rapide`, `Équilibré`, `Sûr`) pour accélérer fortement le scan.
 
 ## Démarrage local
 
