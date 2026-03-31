@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scan 360</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1>Scan 360 (prototype)</h1>
+      <p>
+        Tourne lentement avec ton téléphone. L'application utilise le gyroscope
+        pour guider la capture et assemble une vue panoramique 360° simplifiée.
+      </p>
+
+      <section class="controls">
+        <button id="startBtn">Démarrer la caméra</button>
+        <button id="captureBtn" disabled>Capturer automatiquement</button>
+        <button id="stopBtn" disabled>Arrêter</button>
+      </section>
+
+      <section class="status">
+        <div><strong>Yaw actuel:</strong> <span id="yawValue">0°</span></div>
+        <div><strong>Frames:</strong> <span id="frameCount">0</span></div>
+        <div><strong>État:</strong> <span id="state">En attente</span></div>
+      </section>
+
+      <section class="preview">
+        <video id="video" autoplay playsinline muted></video>
+        <canvas id="frameCanvas" hidden></canvas>
+      </section>
+
+      <section>
+        <h2>Panorama généré</h2>
+        <canvas id="panoramaCanvas" width="2048" height="512"></canvas>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
