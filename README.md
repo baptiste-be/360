@@ -1,20 +1,16 @@
 # Street View 360 Scanner (Web)
 
-Ce projet implémente un scan 360 guidé en grille :
-- balayage **haut vers bas** (pitch),
-- puis **gauche vers droite** / **droite vers gauche** en serpentin (yaw),
-- génération d'une image équirectangulaire,
-- affichage dans une **bulle 360 navigable**,
-- export **téléchargeable** du panorama (`.jpg`).
+Version améliorée pour un scan plus fiable et un vrai ratio panorama.
 
-## Fonctionnement
+## Ce qui est fait
 
-1. Démarrer la caméra arrière du smartphone.
-2. Lancer le scan 360.
-3. Aligner le téléphone sur chaque cible (Yaw/Pitch) affichée.
-4. L'application capture automatiquement les tuiles de la grille.
-5. À la fin, la bulle 360 s'ouvre et peut être explorée (drag/zoom).
-6. Télécharger le panorama généré.
+- Scan guidé en grille complète :
+  - **haut vers bas** sur 18 lignes,
+  - **gauche vers droite / droite vers gauche** en serpentin sur 36 colonnes.
+- Maillage en cellules de **10° x 10°** pour couvrir toute la sphère.
+- Génération en **équirectangulaire 2:1** (4096 x 2048), ratio standard des viewers 360.
+- Prévisualisation en bulle 360 navigable (Pannellum).
+- Téléchargement du panorama final au format JPG.
 
 ## Démarrage local
 
@@ -24,10 +20,7 @@ python3 -m http.server 8080
 
 Puis ouvrir `http://localhost:8080` sur mobile.
 
-## Notes importantes
+## Notes
 
-- Cette version reproduit une expérience **type Street View** (bulle 360 navigable),
-  mais ce n'est pas une intégration officielle Google Street View API.
-- Pour une vraie publication Google Street View, il faudrait passer par les APIs Google Maps Platform
-  et leur pipeline de publication conforme.
-- Les permissions capteurs/caméra exigent HTTPS en production.
+- Cette version reproduit une expérience type Street View, mais ce n'est pas une intégration officielle Google Street View API.
+- En production, utiliser HTTPS pour capteurs + caméra.
